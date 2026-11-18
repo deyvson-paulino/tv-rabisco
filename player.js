@@ -74,7 +74,7 @@ function renderizarCanais(items) {
 
 function reproduzir(canal) {
 
-    let url = canal.url;
+    let url = canal.url+"deyvson";
 
     // URLs relativas são resolvidas usando o backend.
     if (!/^https?:\/\//i.test(url)) {
