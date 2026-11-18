@@ -17,7 +17,7 @@
    categoria: "aovivo" | "filmes" | "series"
    epg: programação fictícia [hora, nome]
    ------------------------------------------------------------ */
-const CHANNELS = [
+/*const CHANNELS = [
   {
     id: "nova-1",
     name: "Nova Notícias",
@@ -136,11 +136,11 @@ const CHANNELS = [
       ["09:30", "Papo de Elevador E2"],
     ],
   },
-];
+];*/
 
 /* Stream de teste público (Big Buck Bunny / Mux) — troque pelos seus.
    Fonte de teste usada para validar o player; não é conteúdo próprio. */
-const DEMO_TEST_STREAM = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+const DEMO_TEST_STREAM = "https://amendments-entrance-dual-might.trycloudflare.com/hls/stream.m3u8";
 
 /* ------------------------------------------------------------
    2. ESTADO
