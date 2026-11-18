@@ -52,27 +52,9 @@ async function carregarCanais() {
     }
 }
 
-function renderizarCanais(items) {
+/*function renderizarCanais(items) {
 
-    lista.innerHTML = `
-    <p>
-        Deyvson teste...............................
-    </p>
-    <button class="card" type="button" data-id="nova-1" role="listitem" aria-label="Nova Notícias — Jornalismo 24 horas com cobertura dos principais acontecimentos.">
-            <div class="card__thumb">
-                <span class="card__initial">N</span>
-                <span class="card__live">AO VIVO</span>
-            </div>
-            <div class="card__body">
-                <h3 class="card__name">Nova Notícias</h3>
-                <p class="card__meta"><span>Ao vivo</span>
-                    <span class="dot"></span><span>Em transmissão</span>
-                </p>
-                <p class="card__now">Agora: Economia em Dia</p>
-             </div>
-        </button>
-        
-`;//"";
+    lista.innerHTML = "";
 
     items.forEach(canal => {
 
@@ -88,7 +70,112 @@ function renderizarCanais(items) {
 
         lista.appendChild(elemento);
     });
+}*/
+
+
+function renderizarCanais(items) {
+
+    lista.innerHTML = "";
+
+    if (!items || items.length === 0) {
+        lista.innerHTML = `
+            <p class="lista-vazia">
+                Nenhum canal encontrado.
+            </p>
+        `;
+        return;
+    }
+
+    items.forEach(canal => {
+
+        // Dados do canal
+        const nome = canal.nome || "Canal sem nome";
+        const inicial = nome.charAt(0).toUpperCase();
+
+        const descricao = canal.descricao ||
+            "Jornalismo e entretenimento.";
+
+        const programa = canal.programa ||
+            "Programação não informada";
+
+        const aoVivo = canal.aoVivo !== false;
+
+        // Criação do botão
+        const elemento = document.createElement("button");
+
+        elemento.className = "card";
+        elemento.type = "button";
+
+        elemento.dataset.id = canal.id || "";
+
+        elemento.setAttribute("role", "listitem");
+
+        elemento.setAttribute(
+            "aria-label",
+            `${nome} — ${descricao}`
+        );
+
+        // Estrutura visual do card
+        const thumb = document.createElement("div");
+        thumb.className = "card__thumb";
+
+        const letra = document.createElement("span");
+        letra.className = "card__initial";
+        letra.textContent = inicial;
+
+        thumb.appendChild(letra);
+
+        if (aoVivo) {
+            const live = document.createElement("span");
+            live.className = "card__live";
+            live.textContent = "AO VIVO";
+
+            thumb.appendChild(live);
+        }
+
+        const body = document.createElement("div");
+        body.className = "card__body";
+
+        const nomeCanal = document.createElement("h3");
+        nomeCanal.className = "card__name";
+        nomeCanal.textContent = nome;
+
+        const meta = document.createElement("p");
+        meta.className = "card__meta";
+
+        const statusCanal = document.createElement("span");
+        statusCanal.textContent = aoVivo ? "Ao vivo" : "Offline";
+
+        const ponto = document.createElement("span");
+        ponto.className = "dot";
+
+        const transmissao = document.createElement("span");
+        transmissao.textContent = aoVivo
+            ? "Em transmissão"
+            : "Indisponível";
+
+        meta.append(statusCanal, ponto, transmissao);
+
+        const agora = document.createElement("p");
+        agora.className = "card__now";
+        agora.textContent = `Agora: ${programa}`;
+
+        // Montagem dos elementos
+        body.append(nomeCanal, meta, agora);
+
+        elemento.append(thumb, body);
+
+        // Evento de reprodução
+        elemento.addEventListener("click", () => {
+            reproduzir(canal);
+        });
+
+        lista.appendChild(elemento);
+
+    });
+
 }
+
 
 function reproduzir(canal) {
 
