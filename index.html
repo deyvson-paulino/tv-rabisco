@@ -62,8 +62,89 @@
         playsinline preload="none"
                aria-label="Player de vídeo"></video>
 
-               </div>
-               </section>
+               <!-- Estado: sem URL configurada -->
+        <div class="player__state" id="stateNoUrl" hidden>
+            <div class="player__state-icon player__state-icon--setup" aria-hidden="true">⚙</div>
+            <h3>Nenhuma transmissão configurada</h3>
+            <p>Este é um canal de demonstração. Insira a URL do seu stream (HLS .m3u8 ou MP4)
+               no arquivo <strong>js/app.js</strong>, na lista de canais.</p>
+            <p class="player__state-hint">Consulte o README para instruções completas.</p>
+          </div>
+  
+          <!-- Estado: carregando -->
+          <div class="player__state" id="stateLoading" hidden>
+            <div class="spinner" aria-hidden="true"></div>
+            <h3>Carregando transmissão…</h3>
+            <p>Conectando ao servidor de streaming.</p>
+          </div>
+  
+          <!-- Estado: sem sinal -->
+          <div class="player__state" id="stateNoSignal" hidden>
+            <div class="player__state-icon player__state-icon--signal" aria-hidden="true">▚▞</div>
+            <h3>Sem sinal</h3>
+            <p>O canal selecionado não possui transmissão ativa neste momento.</p>
+            <button class="btn btn--ghost" id="retryBtn">Tentar novamente</button>
+          </div>
+  
+          <!-- Estado: erro -->
+          <div class="player__state" id="stateError" hidden>
+            <div class="player__state-icon player__state-icon--error" aria-hidden="true">!</div>
+            <h3>Não foi possível reproduzir</h3>
+            <p id="errorMessage">Ocorreu um erro ao carregar a transmissão.</p>
+            <button class="btn btn--ghost" id="errorRetryBtn">Tentar novamente</button>
+          </div>
+  
+          <!-- Controles do player -->
+          <div class="player__controls" id="playerControls">
+            <button class="pbtn" id="playPauseBtn" aria-label="Reproduzir ou pausar" title="Reproduzir/Pausar (Espaço)">
+              <svg class="pbtn__icon pbtn__icon--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="pbtn__icon pbtn__icon--pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            </button>
+  
+            <div class="volume">
+              <button class="pbtn pbtn--sm" id="muteBtn" aria-label="Silenciar" title="Silenciar (M)">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+              </button>
+              <input type="range" id="volumeSlider" class="volume__slider" min="0" max="100" value="80"
+                     aria-label="Volume" />
+            </div>
+  
+            <div class="player__live" id="liveBadge" hidden>
+              <span class="player__live-dot" aria-hidden="true"></span> AO VIVO
+            </div>
+  
+            <div class="player__spacer"></div>
+  
+            <span class="player__time" id="timeLabel">--:--</span>
+  
+            <select class="pselect" id="speedSelect" aria-label="Velocidade" title="Velocidade">
+              <option value="1">1x</option>
+              <option value="0.5">0.5x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2x</option>
+            </select>
+  
+            <button class="pbtn pbtn--sm" id="fullscreenBtn" aria-label="Tela cheia" title="Tela cheia (F)">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14h2v4h4v2H4v-6zm14 0h2v6h-6v-2h4v-4z"/></svg>
+            </button>
+          </div>
+        </div>
+  
+        <div class="now-playing">
+          <div class="now-playing__text">
+            <span class="tag tag--live" id="heroLiveTag" hidden>AO VIVO</span>
+            <h1 id="heroTitle">Selecione um canal</h1>
+            <p id="heroDesc">Escolha um canal na grade abaixo para começar a assistir.</p>
+          </div>
+          <button class="btn btn--favorite" id="heroFavBtn" aria-pressed="false" title="Adicionar aos favoritos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 21s-7.5-4.7-9.7-9.2C.8 8.7 2.7 5 6.2 5c2 0 3.4 1.1 4.3 2.6L12 9.4l1.5-1.8C14.4 6.1 15.8 5 17.8 5c3.5 0 5.4 3.7 3.9 6.8C19.5 16.3 12 21 12 21z"/>
+            </svg>
+            <span id="heroFavLabel">Favoritar</span>
+          </button>
+        </div>
+      </section>
+  
                </main>
                
                <main>
