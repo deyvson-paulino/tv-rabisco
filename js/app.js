@@ -49,5 +49,39 @@ const CONFIG = {
     maxRetries: 3
 };
 
+/* ============================================================
+   2. ESTADO
+   ============================================================ */
+
+let CHANNELS = [];
+
+const state = {
+    category: "inicio",
+    search: "",
+    selectedId: null,
+
+    hls: null,
+
+    favorites: new Set(loadFavorites()),
+    watching: [],
+
+    requestId: 0,
+
+    retryCount: 0,
+    retryTimer: null,
+    startupTimer: null,
+
+    mediaRecoveryAttempted: false,
+    destroyed: false
+};
+
+const CATEGORY_LABELS = {
+    inicio: "Canais disponíveis",
+    aovivo: "Canais ao vivo",
+    filmes: "Canais de filmes",
+    series: "Canais de séries",
+    favoritos: "Seus favoritos"
+};
+
 
 
