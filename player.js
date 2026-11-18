@@ -10,7 +10,7 @@ const BACKEND_URL = "https://nose-highways-agency-butler.trycloudflare.com";
 //"http://localhost:3000";
 
 const video = document.getElementById("video");
-const lista = document.getElementById("lista");
+const lista = document.getElementById("channelGrid");//lista
 const titulo = document.getElementById("titulo");
 const status = document.getElementById("status");
 const busca = document.getElementById("busca");
