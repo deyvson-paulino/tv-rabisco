@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Meu IPTV Player</title>
+    <title>TV Rabisco</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -199,7 +199,32 @@
 
     </aside>
 
-                   
+    <div class="grid" id="channelGrid" role="list" aria-live="polite">
+
+        <button class="card" type="button" data-id="nova-1" role="listitem" aria-label="Nova Notícias — Jornalismo 24 horas com cobertura dos principais acontecimentos.">
+            <div class="card__thumb">
+                <span class="card__initial">N</span>
+                <span class="card__live">AO VIVO</span>
+            </div>
+            <div class="card__body">
+                <h3 class="canal card__name">Nova Notícias</h3>
+                <p class="card__meta"><span>Ao vivo</span>
+                    <span class="dot"></span><span>Em transmissão</span>
+                </p>
+                <p class="card__now">Agora: Economia em Dia</p>
+             </div>
+        </button>
+                
+        <!--<button class="card" type="button" data-id="nova-2" role="listitem" aria-label="Nova Esportes — Transmissões esportivas, mesa-redonda e resumos da rodada."><div class="card__thumb"><span class="card__initial">N</span><span class="card__live">AO VIVO</span></div><div class="card__body"><h3 class="card__name">Nova Esportes</h3><p class="card__meta"><span>Ao vivo</span><span class="dot"></span><span>Em transmissão</span></p><p class="card__now">Agora: Volta Rápida</p></div></button>
+        <button class="card" type="button" data-id="nova-3" role="listitem" aria-label="Nova Documenta — Documentários sobre natureza, ciência e culturas do mundo."><div class="card__thumb"><span class="card__initial">N</span><span class="card__live">AO VIVO</span></div><div class="card__body"><h3 class="card__name">Nova Documenta</h3><p class="card__meta"><span>Ao vivo</span><span class="dot"></span><span>Em transmissão</span></p><p class="card__now">Agora: Rotas do Oceano</p></div></button>
+        <button class="card" type="button" data-id="nova-4" role="listitem" aria-label="Nova Culinária — Programas de gastronomia com chefs convidados."><div class="card__thumb"><span class="card__initial">N</span><span class="card__live">AO VIVO</span></div><div class="card__body"><h3 class="card__name">Nova Culinária</h3><p class="card__meta"><span>Ao vivo</span><span class="dot"></span><span>Em transmissão</span></p><p class="card__now">Agora: Doces &amp; Segredos</p></div></button>
+        <button class="card" type="button" data-id="filme-1" role="listitem" aria-label="Sala Nova — Aventura — Maratona de filmes de aventura em exibição contínua."><div class="card__thumb"><span class="card__initial">S</span></div><div class="card__body"><h3 class="card__name">Sala Nova — Aventura</h3><p class="card__meta"><span>Filmes</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: O Último Farol</p></div></button>
+        <button class="card" type="button" data-id="filme-2" role="listitem" aria-label="Sala Nova — Clássicos — Grandes clássicos do cinema restaurados em alta definição."><div class="card__thumb"><span class="card__initial">S</span></div><div class="card__body"><h3 class="card__name">Sala Nova — Clássicos</h3><p class="card__meta"><span>Filmes</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: Noite de Gala</p></div></button>
+        <button class="card" type="button" data-id="serie-1" role="listitem" aria-label="Nova Séries — Drama — Maratona da série dramática 'Fronteiras'."><div class="card__thumb"><span class="card__initial">N</span></div><div class="card__body"><h3 class="card__name">Nova Séries — Drama</h3><p class="card__meta"><span>Séries</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: Fronteiras T1E5</p></div></button>
+        <button class="card" type="button" data-id="serie-2" role="listitem" aria-label="Nova Séries — Comédia — Sitcoms e comédias de terror leve para todas as idades."><div class="card__thumb"><span class="card__initial">N</span></div><div class="card__body"><h3 class="card__name">Nova Séries — Comédia</h3><p class="card__meta"><span>Séries</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: Papo de Elevador E2</p></div></button>
+    --></div>
+
+
       <!-- ===================== GRADE PRINCIPAL ===================== -->
       <section class="shelf" aria-label="Grade de canais">
         <h2 class="section-title"><span class="section-title__accent"></span><span id="gridTitle">Canais ao vivo</span></h2>
