@@ -83,7 +83,7 @@ function reproduzir(canal) {
 
     video.src = url;
 
-    titulo.textContent = canal.nome;
+    titulo.textContent = canal.nome+"deyvson";
 
     video.load();
 
