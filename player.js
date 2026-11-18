@@ -54,7 +54,7 @@ async function carregarCanais() {
 
 function renderizarCanais(items) {
 
-    lista.innerHTML = ""+'eueueueueu';
+    lista.innerHTML = "";
 
     items.forEach(canal => {
 
