@@ -21,7 +21,7 @@ async function carregarCanais() {
 
     try {
 
-        status.textContent = "Conectando ao backend...";
+        status.textContent = "Conectando a TV...";
 
         const resposta = await fetch(
             `${BACKEND_URL}/api/canais`
@@ -35,11 +35,11 @@ async function carregarCanais() {
 
         renderizarCanais(canais);
 
-        status.textContent = "Backend conectado";
+        status.textContent = "A TV Rabisco está on-line";
 
     } catch (erro) {
 
-        status.textContent = "Backend offline";
+        status.textContent = "TV Rabisco offline";
 
         console.error("Falha ao conectar:", erro);
 
