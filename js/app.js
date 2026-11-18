@@ -83,5 +83,174 @@ const CATEGORY_LABELS = {
     favoritos: "Seus favoritos"
 };
 
+/* ============================================================
+   3. UTILITÁRIOS
+   ============================================================ */
+
+const $ = selector =>
+    document.querySelector(selector);
+
+const $$ = selector =>
+    [...document.querySelectorAll(selector)];
+
+
+function log(...args) {
+    console.log("[NOVATV]", ...args);
+}
+
+
+function warn(...args) {
+    console.warn("[NOVATV]", ...args);
+}
+
+
+function errorLog(...args) {
+    console.error("[NOVATV]", ...args);
+}
+
+
+function el(tag, className = "", text = null) {
+
+    const node = document.createElement(tag);
+
+    if (className) {
+        node.className = className;
+    }
+
+    if (text !== null) {
+        node.textContent = text;
+    }
+
+    return node;
+}
+
+
+function loadFavorites() {
+
+    try {
+
+        const data = JSON.parse(
+            localStorage.getItem("novatv.favorites") || "[]"
+        );
+
+        return Array.isArray(data)
+            ? data.map(String)
+            : [];
+
+    } catch (err) {
+
+        warn("Não foi possível carregar favoritos:", err);
+
+        return [];
+
+    }
+
+}
+
+
+function saveFavorites() {
+
+    try {
+
+        localStorage.setItem(
+            "novatv.favorites",
+            JSON.stringify([...state.favorites])
+        );
+
+    } catch (err) {
+
+        warn("Não foi possível salvar favoritos:", err);
+
+    }
+
+}
+
+
+function getChannel(id) {
+
+    return CHANNELS.find(
+        channel => channel.id === String(id)
+    ) || null;
+
+}
+
+
+function validarURL(value) {
+
+    if (typeof value !== "string" || !value.trim()) {
+        return "";
+    }
+
+    try {
+
+        const url = new URL(value.trim());
+
+        if (!["http:", "https:"].includes(url.protocol)) {
+            return "";
+        }
+
+        return url.href;
+
+    } catch {
+
+        return "";
+
+    }
+
+}
+
+
+function normalizarTexto(value) {
+
+    return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+
+}
+
+
+function obterCampo(obj, campos) {
+
+    for (const campo of campos) {
+
+        const valor = obj?.[campo];
+
+        if (
+            valor !== undefined &&
+            valor !== null &&
+            String(valor).trim() !== ""
+        ) {
+            return valor;
+        }
+
+    }
+
+    return "";
+
+}
+
+
+function limparTimers() {
+
+    if (state.retryTimer) {
+        clearTimeout(state.retryTimer);
+        state.retryTimer = null;
+    }
+
+    if (state.startupTimer) {
+        clearTimeout(state.startupTimer);
+        state.startupTimer = null;
+    }
+
+}
+
+
+function limitarTexto(value, max = 500) {
+
+    return String(value || "").slice(0, max);
+
+}
 
 
