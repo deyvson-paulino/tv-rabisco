@@ -33,13 +33,7 @@
         <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
         </svg>
-        <!--<input
-            type="text"
-            id="busca"
-            placeholder="Buscar canal..."
-        >-->
-        
-        <input type="search busca" id="searchInput" class="search__input"
+        <input type="search" id="searchInput" class="search__input"
                placeholder="Buscar canais…" aria-label="Buscar canais" autocomplete="off" />
       </div>
       <div class="clock" id="clock" aria-label="Relógio">
@@ -51,14 +45,14 @@
       </button>
     </div>
 
+    
+    <span id="status">Conectando...</span>
+
   </header>
 
 
 
   <main class="layout" id="layout">
-    
-    <span id="status">Conectando...</span>
-
     <!-- ===================== PLAYER ===================== -->
     <section class="hero" id="heroSection" aria-label="Player principal">
       <div class="player" id="playerShell">
@@ -93,7 +87,11 @@
 
         <h2>Lista de canais M3U</h2>
 
-        
+        <input
+            type="text"
+            id="busca"
+            placeholder="Buscar canal..."
+        >
 
         <div id="lista"></div>
 
