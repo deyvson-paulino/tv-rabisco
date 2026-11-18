@@ -178,14 +178,23 @@
       <!-- ===================== GRADE PRINCIPAL ===================== -->
       <section class="shelf" aria-label="Grade de canais">
         <h2 class="section-title"><span class="section-title__accent"></span><span id="gridTitle">Canais ao vivo</span></h2>
-        <div class="grid" id="lista channelGrid" role="list" aria-live="polite"><!-- preenchido via JS --></div>
+        <div class="grid" id="channelGrid" role="list" aria-live="polite"><!-- preenchido via JS --></div>
         <p class="grid__empty" id="gridEmpty" hidden>Nenhum canal encontrado nesta categoria.</p>
       </section>
 
 
     <aside>
 
-        <h2>Lista de canais M3U</h2>
+        <!-- ===================== GRADE PRINCIPAL ===================== -->
+      <section class="shelf" aria-label="Grade de canais">
+        <h2 class="section-title"><span class="section-title__accent"></span><span id="gridTitle">Lista de canais M3U</span></h2>
+        <div class="grid" id="channelGrid" role="list" aria-live="polite"><!-- preenchido via JS -->
+            <div id="lista"></div>
+        </div>
+        <p class="grid__empty" id="gridEmpty" hidden>Nenhum canal encontrado nesta categoria.</p>
+      </section>
+        
+       
 
         <!--<input
             type="text"
@@ -193,7 +202,7 @@
             placeholder="Buscar canal..."
         >-->
 
-        <div id="lista"></div>
+        
 
     </aside>
 
