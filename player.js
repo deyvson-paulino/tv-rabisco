@@ -54,7 +54,25 @@ async function carregarCanais() {
 
 function renderizarCanais(items) {
 
-    lista.innerHTML = "";
+    lista.innerHTML = `
+    <p>
+        Deyvson teste...............................
+    </p>
+    <button class="card" type="button" data-id="nova-1" role="listitem" aria-label="Nova Notícias — Jornalismo 24 horas com cobertura dos principais acontecimentos.">
+            <div class="card__thumb">
+                <span class="card__initial">N</span>
+                <span class="card__live">AO VIVO</span>
+            </div>
+            <div class="card__body">
+                <h3 class="card__name">Nova Notícias</h3>
+                <p class="card__meta"><span>Ao vivo</span>
+                    <span class="dot"></span><span>Em transmissão</span>
+                </p>
+                <p class="card__now">Agora: Economia em Dia</p>
+             </div>
+        </button>
+        
+`;//"";
 
     items.forEach(canal => {
 
