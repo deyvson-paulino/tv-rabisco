@@ -254,3 +254,274 @@ function limitarTexto(value, max = 500) {
 }
 
 
+/* ============================================================
+   4. PREPARAÇÃO DOS CANAIS
+   ============================================================ */
+
+function prepararCanais(canais) {
+
+    if (!Array.isArray(canais)) {
+        return [];
+    }
+
+    const ids = new Set();
+
+    return canais.map((canal, index) => {
+
+        if (!canal || typeof canal !== "object") {
+            return null;
+        }
+
+        const grupo = normalizarTexto(
+            obterCampo(canal, [
+                "group",
+                "groupTitle",
+                "group-title",
+                "category"
+            ])
+        );
+
+        let categoria = "aovivo";
+
+        if (
+            grupo.includes("filme") ||
+            grupo.includes("cinema")
+        ) {
+
+            categoria = "filmes";
+
+        } else if (
+            grupo.includes("serie") ||
+            grupo.includes("seriado")
+        ) {
+
+            categoria = "series";
+
+        }
+
+        let id = String(
+            obterCampo(canal, [
+                "id",
+                "tvg-id"
+            ]) || `canal-${index + 1}`
+        );
+
+        if (ids.has(id)) {
+            id = `${id}-${index + 1}`;
+        }
+
+        ids.add(id);
+
+        const nome = String(
+            obterCampo(canal, [
+                "name",
+                "title",
+                "tvg-name"
+            ]) || `Canal ${index + 1}`
+        );
+
+        const url = validarURL(
+            obterCampo(canal, [
+                "url",
+                "src",
+                "stream",
+                "file"
+            ])
+        );
+
+        const logo = validarURL(
+            obterCampo(canal, [
+                "logo",
+                "image",
+                "tvg-logo"
+            ])
+        );
+
+        return {
+            id,
+            name: limitarTexto(nome, 150),
+            category: categoria,
+            isLive: categoria === "aovivo",
+            url,
+            logo,
+            desc: limitarTexto(
+                obterCampo(canal, [
+                    "desc",
+                    "description"
+                ]) || `Transmissão do canal ${nome}.`,
+                500
+            ),
+            epg: Array.isArray(canal.epg)
+                ? canal.epg
+                : []
+        };
+
+    }).filter(Boolean);
+
+}
+
+
+/* ============================================================
+   5. BACKEND — CARREGAMENTO DA API
+   ============================================================ */
+
+async function carregarCanaisAPI() {
+
+    log("Conectando ao backend:", API_BASE_URL);
+
+    const controller = new AbortController();
+
+    const timeout = setTimeout(
+        () => controller.abort(),
+        CONFIG.apiTimeout
+    );
+
+    try {
+
+        const resposta = await fetch(API_CHANNELS, {
+            method: "GET",
+            headers: {
+                Accept: "application/json"
+            },
+            cache: "no-store",
+            signal: controller.signal
+        });
+
+        log("Resposta da API:", resposta.status);
+
+        if (!resposta.ok) {
+            throw new Error(`HTTP ${resposta.status}`);
+        }
+
+        const dados = await resposta.json();
+
+        let lista = [];
+
+        if (Array.isArray(dados)) {
+
+            lista = dados;
+
+        } else if (Array.isArray(dados?.channels)) {
+
+            lista = dados.channels;
+
+        } else if (Array.isArray(dados?.data)) {
+
+            lista = dados.data;
+
+        } else if (Array.isArray(dados?.items)) {
+
+            lista = dados.items;
+
+        } else {
+
+            throw new Error(
+                "Formato da API não reconhecido. Esperado um array de canais."
+            );
+
+        }
+
+        CHANNELS = prepararCanais(lista);
+
+        log("Canais recebidos:", lista.length);
+        log("Canais válidos:", CHANNELS.length);
+
+        if (CHANNELS.length !== lista.length) {
+            warn("Alguns registros foram ignorados durante a preparação.");
+        }
+
+        atualizarHeroStatus(
+            "NovaTV",
+            `${CHANNELS.length} canais disponíveis.`
+        );
+
+        return CHANNELS.length > 0;
+
+    } catch (err) {
+
+        if (err.name === "AbortError") {
+
+            errorLog(
+                "Tempo limite ao conectar com a API."
+            );
+
+        } else {
+
+            errorLog(
+                "Falha ao carregar a API:",
+                err
+            );
+
+        }
+
+        CHANNELS = [];
+
+        atualizarHeroStatus(
+            "Backend indisponível",
+            "Não foi possível carregar os canais. Verifique o Node.js, o endereço do Tunnel e a API."
+        );
+
+        return false;
+
+    } finally {
+
+        clearTimeout(timeout);
+
+    }
+
+}
+
+
+function atualizarHeroStatus(titulo, descricao) {
+
+    const title = $("#heroTitle");
+    const desc = $("#heroDesc");
+
+    if (title) title.textContent = titulo;
+    if (desc) desc.textContent = descricao;
+
+}
+
+
+/* ============================================================
+   6. RELÓGIO
+   ============================================================ */
+
+function startClock() {
+
+    const time = $("#clockTime");
+    const date = $("#clockDate");
+
+    if (!time || !date) return;
+
+    const formatDate = new Intl.DateTimeFormat(
+        "pt-BR",
+        {
+            weekday: "long",
+            day: "numeric",
+            month: "short"
+        }
+    );
+
+    function tick() {
+
+        const now = new Date();
+
+        time.textContent = now.toLocaleTimeString(
+            "pt-BR",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+        date.textContent = formatDate.format(now);
+
+    }
+
+    tick();
+
+    setInterval(tick, 30000);
+
+}
+
