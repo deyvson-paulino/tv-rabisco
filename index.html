@@ -13,23 +13,68 @@
 
 <body>
 
-<header>
-    <h1>▶ Meu IPTV Player</h1>
-    <span id="status">Conectando...</span>
-</header>
+  <!-- ===================== CABEÇALHO ===================== -->
+  <header class="topbar" id="topbar">
+    <div class="topbar__brand" aria-label="NovaTV">
+      <span class="topbar__logo-mark" aria-hidden="true"></span>
+      <span class="topbar__logo">Nova<em>TV</em></span>
+    </div>
 
-<main>
+    <nav class="topnav" id="mainNav" role="navigation" aria-label="Categorias">
+      <button class="topnav__item is-active" data-category="inicio" aria-current="page">Início</button>
+      <button class="topnav__item" data-category="aovivo">Ao vivo</button>
+      <button class="topnav__item" data-category="filmes">Filmes</button>
+      <button class="topnav__item" data-category="series">Séries</button>
+      <button class="topnav__item" data-category="favoritos">Favoritos</button>
+    </nav>
+
+    <div class="topbar__actions">
+      <div class="search" role="search">
+        <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+        </svg>
+        <input type="search" id="searchInput" class="search__input"
+               placeholder="Buscar canais…" aria-label="Buscar canais" autocomplete="off" />
+      </div>
+      <div class="clock" id="clock" aria-label="Relógio">
+        <span id="clockTime">--:--</span>
+        <span id="clockDate">—</span>
+      </div>
+      <button class="profile" id="profileBtn" aria-label="Perfil do usuário">
+        <span class="profile__avatar" aria-hidden="true">N</span>
+      </button>
+    </div>
+
+    
+    <span id="status">Conectando...</span>
+
+  </header>
+
+
+
+  <main class="layout" id="layout">
+    <!-- ===================== PLAYER ===================== -->
+    <section class="hero" id="heroSection" aria-label="Player principal">
+      <div class="player" id="playerShell">
+        <video id="video" class="player__video" playsinline preload="none"
+               aria-label="Player de vídeo"></video>
+
+               </div>
+               </section>
+               </main>
+               
+               <main>
 
     <section class="player-area">
 
-        <video
+       <!-- <video
             id="video"
             poster="https://nose-highways-agency-butler.trycloudflare.com/imagens/screen-logol-TV RABISCO.png"
             src="https://nose-highways-agency-butler.trycloudflare.com/videos/filme1.mp4"
             controls
             autoplay
             playsinline
-        ></video>
+        ></video>-->
 
         <h2 id="titulo">Selecione um canal</h2>
 
