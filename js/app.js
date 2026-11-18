@@ -1,6 +1,3 @@
-/* Stream de teste público (Big Buck Bunny / Mux) — troque pelos seus.
-   Fonte de teste usada para validar o player; não é conteúdo próprio. */
-const DEMO_TEST_STREAM = "https://amendments-entrance-dual-might.trycloudflare.com/hls/stream.m3u8";
 
 /* ------------------------------------------------------------
    4. RELÓGIO DO CABEÇALHO
@@ -16,61 +13,6 @@ function startClock() {
   };
   tick();
   setInterval(tick, 30_000);
-}
-
-/* ------------------------------------------------------------
-   6. EPG SIMPLES (programa atual + próximo)
-   ------------------------------------------------------------ */
-function currentProgram(channel) {
-  if (!channel.epg || channel.epg.length === 0) return null;
-  const now = new Date();
-  const minutesNow = now.getHours() * 60 + now.getMinutes();
-
-  for (let i = 0; i < channel.epg.length; i++) {
-    const [startStr, name] = channel.epg[i];
-    const [h, m] = startStr.split(":").map(Number);
-    const start = h * 60 + m;
-    const end = i + 1 < channel.epg.length ? parseStart(channel.epg[i + 1][0]) : 24 * 60;
-    if (minutesNow >= start && minutesNow < end) return name;
-  }
-  // Antes da primeira entrada do dia
-  return channel.epg[0][1];
-}
-
-function parseStart(str) {
-  const [h, m] = str.split(":").map(Number);
-  return h * 60 + m;
-}
-
-function renderEpg(channel) {
-  const section = $("#epgSection");
-  const timeline = $("#epgTimeline");
-  if (!channel.epg || channel.epg.length === 0) {
-    section.hidden = true;
-    return;
-  }
-
-  $("#epgChannelName").textContent = channel.name;
-  timeline.replaceChildren();
-
-  const now = new Date();
-  const minutesNow = now.getHours() * 60 + now.getMinutes();
-  const currentName = currentProgram(channel);
-  const currentIndex = channel.epg.findIndex(([, name]) => name === currentName);
-
-  channel.epg.forEach(([time, name], i) => {
-    const item = el("div", "epg__item");
-    const start = parseStart(time);
-    if (i === currentIndex && minutesNow >= start) item.classList.add("epg__item--current");
-    else if (i === currentIndex + 1) item.classList.add("epg__item--next");
-
-    item.appendChild(el("span", "epg__time", time));
-    item.appendChild(el("p", "epg__name", name));
-    if (i === currentIndex && minutesNow >= start) item.appendChild(el("span", "epg__badge", "NO AR AGORA"));
-    timeline.appendChild(item);
-  });
-
-  section.hidden = false;
 }
 
 /* ------------------------------------------------------------
