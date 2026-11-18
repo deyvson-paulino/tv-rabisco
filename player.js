@@ -62,7 +62,7 @@ function renderizarCanais(items) {
 
         elemento.className = "canal";
 
-        elemento.textContent = canal.nome+"deyvson";
+        elemento.textContent = canal.nome;
 
         elemento.addEventListener("click", () => {
             reproduzir(canal);
