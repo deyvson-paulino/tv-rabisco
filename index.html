@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description" content="TV Rabisco - Assista aos seus canais e conteúdos favoritos.">
+
     <title>TV Rabisco</title>
 
     <link rel="stylesheet" href="css/style.css">
@@ -13,244 +15,498 @@
 
 <body>
 
-  <!-- ===================== CABEÇALHO ===================== -->
-  <header class="topbar" id="topbar">
-    <div class="topbar__brand" aria-label="TV Rabisco">
-      <span class="topbar__logo-mark" aria-hidden="true"></span>
-      <span class="topbar__logo"><em>TV</em>Rabisco</span>
-    </div>
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
 
-    <nav class="topnav" id="mainNav" role="navigation" aria-label="Categorias">
-      <button class="topnav__item is-active" data-category="inicio" aria-current="page">Início</button>
-      <button class="topnav__item" data-category="aovivo">Ao vivo</button>
-      <button class="topnav__item" data-category="filmes">Filmes</button>
-      <button class="topnav__item" data-category="series">Séries</button>
-      <button class="topnav__item" data-category="favoritos">Favoritos</button>
-    </nav>
+    <header class="topbar" id="topbar">
 
-    <div class="topbar__actions">
-      <div class="search" role="search">
-        <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
-        </svg>
-        <input type="search" id="busca" class="search__input"
-               placeholder="Buscar canais…" aria-label="Buscar canais" autocomplete="off" />
-      </div>
-      <div class="clock" id="clock" aria-label="Relógio">
-        <span id="clockTime">--:--</span>
-        <span id="clockDate">—</span>
-      </div>
-      <button class="profile" id="profileBtn" aria-label="Perfil do usuário">
-        <span class="profile__avatar" aria-hidden="true">N</span>
-      </button>
-    </div>
+        <div class="topbar__brand" aria-label="TV Rabisco">
+            <span class="topbar__logo-mark" aria-hidden="true"></span>
+            <span class="topbar__logo"><em>TV</em>Rabisco</span>
+        </div>
 
-    
-    <span id="status">Conectando...</span>
+        <nav class="topnav" id="mainNav" aria-label="Categorias">
 
-  </header>
-
-
-
-  <main class="layout" id="layout">
-    <!-- ===================== PLAYER ===================== -->
-    <section class="hero" id="heroSection" aria-label="Player principal">
-      <div class="player" id="playerShell">
-        <video id="video" class="player__video"
-        poster="https://nose-highways-agency-butler.trycloudflare.com/imagens/screen-logol-TV RABISCO.png"
-        src="https://nose-highways-agency-butler.trycloudflare.com/videos/filme1.mp4"
-        playsinline preload="none"
-               aria-label="Player de vídeo"></video>
-
-               <!-- Estado: sem URL configurada -->
-        <div class="player__state" id="stateNoUrl" hidden>
-            <div class="player__state-icon player__state-icon--setup" aria-hidden="true">⚙</div>
-            <h3>Nenhuma transmissão configurada</h3>
-            <p>Este é um canal de demonstração. Insira a URL do seu stream (HLS .m3u8 ou MP4)
-               no arquivo <strong>js/app.js</strong>, na lista de canais.</p>
-            <p class="player__state-hint">Consulte o README para instruções completas.</p>
-          </div>
-  
-          <!-- Estado: carregando -->
-          <div class="player__state" id="stateLoading" hidden>
-            <div class="spinner" aria-hidden="true"></div>
-            <h3>Carregando transmissão…</h3>
-            <p>Conectando ao servidor de streaming.</p>
-          </div>
-  
-          <!-- Estado: sem sinal -->
-          <div class="player__state" id="stateNoSignal" hidden>
-            <div class="player__state-icon player__state-icon--signal" aria-hidden="true">▚▞</div>
-            <h3>Sem sinal</h3>
-            <p>O canal selecionado não possui transmissão ativa neste momento.</p>
-            <button class="btn btn--ghost" id="retryBtn">Tentar novamente</button>
-          </div>
-  
-          <!-- Estado: erro -->
-          <div class="player__state" id="stateError" hidden>
-            <div class="player__state-icon player__state-icon--error" aria-hidden="true">!</div>
-            <h3>Não foi possível reproduzir</h3>
-            <p id="errorMessage">Ocorreu um erro ao carregar a transmissão.</p>
-            <button class="btn btn--ghost" id="errorRetryBtn">Tentar novamente</button>
-          </div>
-  
-          <!-- Controles do player -->
-          <div class="player__controls" id="playerControls">
-            <button class="pbtn" id="playPauseBtn" aria-label="Reproduzir ou pausar" title="Reproduzir/Pausar (Espaço)">
-              <svg class="pbtn__icon pbtn__icon--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-              <svg class="pbtn__icon pbtn__icon--pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+            <button type="button" class="topnav__item is-active"
+                    data-category="inicio" aria-current="page">
+                Início
             </button>
-  
-            <div class="volume">
-              <button class="pbtn pbtn--sm" id="muteBtn" aria-label="Silenciar" title="Silenciar (M)">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
-              </button>
-              <input type="range" id="volumeSlider" class="volume__slider" min="0" max="100" value="80"
-                     aria-label="Volume" />
-            </div>
-  
-            <div class="player__live" id="liveBadge" hidden>
-              <span class="player__live-dot" aria-hidden="true"></span> AO VIVO
-            </div>
-  
-            <div class="player__spacer"></div>
-  
-            <span class="player__time" id="timeLabel">--:--</span>
-  
-            <select class="pselect" id="speedSelect" aria-label="Velocidade" title="Velocidade">
-              <option value="1">1x</option>
-              <option value="0.5">0.5x</option>
-              <option value="1.5">1.5x</option>
-              <option value="2">2x</option>
-            </select>
-  
-            <button class="pbtn pbtn--sm" id="fullscreenBtn" aria-label="Tela cheia" title="Tela cheia (F)">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14h2v4h4v2H4v-6zm14 0h2v6h-6v-2h4v-4z"/></svg>
+
+            <button type="button" class="topnav__item"
+                    data-category="aovivo">
+                Ao vivo
             </button>
-          </div>
-        </div>
-  
-        <div class="now-playing">
-          <div class="now-playing__text">
-            <span class="tag tag--live" id="heroLiveTag" hidden>AO VIVO</span>
-            <h1 id="titulo">Selecione um canal</h1>
-            <p id="heroDesc">Escolha um canal na grade abaixo para começar a assistir.</p>
-          </div>
-          <button class="btn btn--favorite" id="heroFavBtn" aria-pressed="false" title="Adicionar aos favoritos">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="M12 21s-7.5-4.7-9.7-9.2C.8 8.7 2.7 5 6.2 5c2 0 3.4 1.1 4.3 2.6L12 9.4l1.5-1.8C14.4 6.1 15.8 5 17.8 5c3.5 0 5.4 3.7 3.9 6.8C19.5 16.3 12 21 12 21z"/>
-            </svg>
-            <span id="heroFavLabel">Favoritar</span>
-          </button>
-        </div>
-      </section>
-  
-               
 
-    <section class="player-area">
+            <button type="button" class="topnav__item"
+                    data-category="filmes">
+                Filmes
+            </button>
 
-       <!-- <video
-            id="video"
-            poster="https://nose-highways-agency-butler.trycloudflare.com/imagens/screen-logol-TV RABISCO.png"
-            src="https://nose-highways-agency-butler.trycloudflare.com/videos/filme1.mp4"
-            controls
-            autoplay
-            playsinline
-        ></video>
+            <button type="button" class="topnav__item"
+                    data-category="series">
+                Séries
+            </button>
 
-        <h2 id="titulo">Selecione um canal</h2>-->
+            <button type="button" class="topnav__item"
+                    data-category="favoritos">
+                Favoritos
+            </button>
 
-    </section>
+        </nav>
 
+        <div class="topbar__actions">
 
+            <!-- BUSCA -->
 
-    <!-- ===================== EPG (GUIA DE PROGRAMAÇÃO) ===================== -->
-    <section class="epg" id="epgSection" aria-label="Guia de programação" hidden>
-        <h2 class="section-title">
-          <span class="section-title__accent"></span>
-          Programação — <span id="epgChannelName"></span>
-        </h2>
-        <div class="epg__timeline" id="epgTimeline"><!-- preenchido via JS --></div>
-      </section>
+            <div class="search" role="search">
 
+                <svg class="search__icon"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     aria-hidden="true">
 
-                  <!-- <aside>-->
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="m20 20-3.5-3.5"/>
 
-        <!-- ===================== GRADE TV RABISCO PRINCIPAL ===================== -->
-      <section class="shelf" aria-label="Grade de canais">
-        <h2 class="section-title"><span class="section-title__accent"></span><span id="gridTitle">Canais TV Rabisco</span></h2>
-        <div class="grid" id="channelGrid" role="list" aria-live="polite"><!-- preenchido via JS -->
-            <div id="lista"></div>
-        </div>
-        <p class="grid__empty" id="gridEmpty" hidden>Nenhum canal encontrado nesta categoria.</p>
-      </section>
-        
-       
+                </svg>
 
-        <!--<input
-            type="text"
-            id="busca"
-            placeholder="Buscar canal..."
-        >-->
+                <input
+                    type="search"
+                    id="busca"
+                    class="search__input"
+                    placeholder="Buscar canais..."
+                    aria-label="Buscar canais"
+                    autocomplete="off"
+                >
 
-        
-
-   <!-- </aside>-->
-
-    <!--<div class="grid" id="channelGrid" role="list" aria-live="polite">
-
-        <button class="card" type="button" data-id="nova-1" role="listitem" aria-label="Nova Notícias — Jornalismo 24 horas com cobertura dos principais acontecimentos.">
-            <div class="card__thumb">
-                <span class="card__initial">N</span>
-                <span class="card__live">AO VIVO</span>
             </div>
-            <div class="card__body">
-                <h3 class="card__name">Nova Notícias</h3>
-                <p class="card__meta"><span>Ao vivo</span>
-                    <span class="dot"></span><span>Em transmissão</span>
-                </p>
-                <p class="card__now">Agora: Economia em Dia</p>
-             </div>
-        </button>
-                
-        <button class="card" type="button" data-id="nova-2" role="listitem" aria-label="Nova Esportes — Transmissões esportivas, mesa-redonda e resumos da rodada."><div class="card__thumb"><span class="card__initial">N</span><span class="card__live">AO VIVO</span></div><div class="card__body"><h3 class="card__name">Nova Esportes</h3><p class="card__meta"><span>Ao vivo</span><span class="dot"></span><span>Em transmissão</span></p><p class="card__now">Agora: Volta Rápida</p></div></button>
-        <button class="card" type="button" data-id="nova-3" role="listitem" aria-label="Nova Documenta — Documentários sobre natureza, ciência e culturas do mundo."><div class="card__thumb"><span class="card__initial">N</span><span class="card__live">AO VIVO</span></div><div class="card__body"><h3 class="card__name">Nova Documenta</h3><p class="card__meta"><span>Ao vivo</span><span class="dot"></span><span>Em transmissão</span></p><p class="card__now">Agora: Rotas do Oceano</p></div></button>
-        <button class="card" type="button" data-id="nova-4" role="listitem" aria-label="Nova Culinária — Programas de gastronomia com chefs convidados."><div class="card__thumb"><span class="card__initial">N</span><span class="card__live">AO VIVO</span></div><div class="card__body"><h3 class="card__name">Nova Culinária</h3><p class="card__meta"><span>Ao vivo</span><span class="dot"></span><span>Em transmissão</span></p><p class="card__now">Agora: Doces &amp; Segredos</p></div></button>
-        <button class="card" type="button" data-id="filme-1" role="listitem" aria-label="Sala Nova — Aventura — Maratona de filmes de aventura em exibição contínua."><div class="card__thumb"><span class="card__initial">S</span></div><div class="card__body"><h3 class="card__name">Sala Nova — Aventura</h3><p class="card__meta"><span>Filmes</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: O Último Farol</p></div></button>
-        <button class="card" type="button" data-id="filme-2" role="listitem" aria-label="Sala Nova — Clássicos — Grandes clássicos do cinema restaurados em alta definição."><div class="card__thumb"><span class="card__initial">S</span></div><div class="card__body"><h3 class="card__name">Sala Nova — Clássicos</h3><p class="card__meta"><span>Filmes</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: Noite de Gala</p></div></button>
-        <button class="card" type="button" data-id="serie-1" role="listitem" aria-label="Nova Séries — Drama — Maratona da série dramática 'Fronteiras'."><div class="card__thumb"><span class="card__initial">N</span></div><div class="card__body"><h3 class="card__name">Nova Séries — Drama</h3><p class="card__meta"><span>Séries</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: Fronteiras T1E5</p></div></button>
-        <button class="card" type="button" data-id="serie-2" role="listitem" aria-label="Nova Séries — Comédia — Sitcoms e comédias de terror leve para todas as idades."><div class="card__thumb"><span class="card__initial">N</span></div><div class="card__body"><h3 class="card__name">Nova Séries — Comédia</h3><p class="card__meta"><span>Séries</span><span class="dot"></span><span>Programado</span></p><p class="card__now">Agora: Papo de Elevador E2</p></div></button>
-    </div>-->
+
+            <!-- RELÓGIO -->
+
+            <div class="clock" id="clock" aria-label="Relógio">
+
+                <span id="clockTime">--:--</span>
+                <span id="clockDate">--</span>
+
+            </div>
+
+            <!-- PERFIL -->
+
+            <button
+                type="button"
+                class="profile"
+                id="profileBtn"
+                aria-label="Perfil do usuário">
+
+                <span class="profile__avatar" aria-hidden="true">N</span>
+
+            </button>
+
+        </div>
+
+        <!-- STATUS DO BACKEND -->
+
+        <span id="status" role="status" aria-live="polite">
+            Conectando...
+        </span>
+
+    </header>
 
 
-      <!-- ===================== GRADE PRINCIPAL ===================== -->
-      <section class="shelf" aria-label="Grade de canais">
-        <h2 class="section-title"><span class="section-title__accent"></span><span id="gridTitle">Canais ao vivo</span></h2>
-        <div class="grid" id="channelGrid" role="list" aria-live="polite"><!-- preenchido via JS --></div>
-        <p class="grid__empty" id="gridEmpty" hidden>Nenhum canal encontrado nesta categoria.</p>
-      </section>
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="layout" id="layout">
 
 
-    
+        <!-- =================================================
+             PLAYER PRINCIPAL
+        ================================================== -->
+
+        <section class="hero" id="heroSection" aria-label="Player principal">
+
+            <div class="player" id="playerShell">
+
+                <video
+                    id="video"
+                    class="player__video"
+                    poster="https://nose-highways-agency-butler.trycloudflare.com/imagens/screen-logol-TV%20RABISCO.png"
+                    playsinline
+                    preload="none"
+                    aria-label="Player de vídeo">
+                </video>
 
 
-    <!-- ===================== RECOMENDADOS ===================== -->
-    <section class="shelf" aria-label="Canais recomendados">
-        <h2 class="section-title"><span class="section-title__accent"></span>Canais recomendados</h2>
-        <div class="shelf__row" id="recommendedRow"><!-- preenchido via JS --></div>
-      </section>
+                <!-- ESTADO: SEM URL -->
+
+                <div class="player__state" id="stateNoUrl" hidden>
+
+                    <div class="player__state-icon player__state-icon--setup"
+                         aria-hidden="true">
+                        ⚙
+                    </div>
+
+                    <h3>Nenhuma transmissão configurada</h3>
+
+                    <p>
+                        Este canal ainda não possui uma transmissão configurada.
+                        Verifique a URL do canal no arquivo channels.json.
+                    </p>
+
+                    <p class="player__state-hint">
+                        Consulte as configurações do servidor.
+                    </p>
+
+                </div>
+
+
+                <!-- ESTADO: CARREGANDO -->
+
+                <div class="player__state" id="stateLoading" hidden>
+
+                    <div class="spinner" aria-hidden="true"></div>
+
+                    <h3>Carregando transmissão...</h3>
+
+                    <p>Conectando ao servidor de streaming.</p>
+
+                </div>
+
+
+                <!-- ESTADO: SEM SINAL -->
+
+                <div class="player__state" id="stateNoSignal" hidden>
+
+                    <div class="player__state-icon player__state-icon--signal"
+                         aria-hidden="true">
+                        ▚▞
+                    </div>
+
+                    <h3>Sem sinal</h3>
+
+                    <p>
+                        O canal selecionado não possui transmissão ativa
+                        neste momento.
+                    </p>
+
+                    <button type="button" class="btn btn--ghost" id="retryBtn">
+                        Tentar novamente
+                    </button>
+
+                </div>
+
+
+                <!-- ESTADO: ERRO -->
+
+                <div class="player__state" id="stateError" hidden>
+
+                    <div class="player__state-icon player__state-icon--error"
+                         aria-hidden="true">
+                        !
+                    </div>
+
+                    <h3>Não foi possível reproduzir</h3>
+
+                    <p id="errorMessage">
+                        Ocorreu um erro ao carregar a transmissão.
+                    </p>
+
+                    <button type="button" class="btn btn--ghost" id="errorRetryBtn">
+                        Tentar novamente
+                    </button>
+
+                </div>
+
+
+                <!-- CONTROLES DO PLAYER -->
+
+                <div class="player__controls" id="playerControls">
+
+                    <!-- PLAY / PAUSE -->
+
+                    <button
+                        type="button"
+                        class="pbtn"
+                        id="playPauseBtn"
+                        aria-label="Reproduzir ou pausar"
+                        title="Reproduzir/Pausar (Espaço)">
+
+                        <svg class="pbtn__icon pbtn__icon--play"
+                             viewBox="0 0 24 24"
+                             fill="currentColor"
+                             aria-hidden="true">
+
+                            <path d="M8 5v14l11-7z"/>
+
+                        </svg>
+
+                        <svg class="pbtn__icon pbtn__icon--pause"
+                             viewBox="0 0 24 24"
+                             fill="currentColor"
+                             aria-hidden="true"
+                             style="display:none">
+
+                            <path d="M6 5h4v14H6zM14 5h4v14h-4z"/>
+
+                        </svg>
+
+                    </button>
+
+
+                    <!-- VOLUME -->
+
+                    <div class="volume">
+
+                        <button
+                            type="button"
+                            class="pbtn pbtn--sm"
+                            id="muteBtn"
+                            aria-label="Silenciar"
+                            title="Silenciar (M)">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="currentColor"
+                                 aria-hidden="true">
+
+                                <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+
+                            </svg>
+
+                        </button>
+
+                        <input
+                            type="range"
+                            id="volumeSlider"
+                            class="volume__slider"
+                            min="0"
+                            max="100"
+                            value="80"
+                            aria-label="Volume"
+                        >
+
+                    </div>
+
+
+                    <!-- INDICADOR AO VIVO -->
+
+                    <div class="player__live" id="liveBadge" hidden>
+
+                        <span class="player__live-dot" aria-hidden="true"></span>
+                        AO VIVO
+
+                    </div>
+
+
+                    <div class="player__spacer"></div>
+
+
+                    <!-- TEMPO -->
+
+                    <span class="player__time" id="timeLabel">
+                        --:--
+                    </span>
+
+
+                    <!-- VELOCIDADE -->
+
+                    <select
+                        class="pselect"
+                        id="speedSelect"
+                        aria-label="Velocidade"
+                        title="Velocidade">
+
+                        <option value="1">1x</option>
+                        <option value="0.5">0.5x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+
+                    </select>
+
+
+                    <!-- TELA CHEIA -->
+
+                    <button
+                        type="button"
+                        class="pbtn pbtn--sm"
+                        id="fullscreenBtn"
+                        aria-label="Tela cheia"
+                        title="Tela cheia (F)">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="currentColor"
+                             aria-hidden="true">
+
+                            <path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14h2v4h4v2H4v-6zm14 0h2v6h-6v-2h4v-4z"/>
+
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMAÇÕES DO CANAL -->
+
+            <div class="now-playing">
+
+                <div class="now-playing__text">
+
+                    <span class="tag tag--live" id="heroLiveTag" hidden>
+                        AO VIVO
+                    </span>
+
+                    <h1 id="titulo">
+                        Selecione um canal
+                    </h1>
+
+                    <p id="heroDesc">
+                        Escolha um canal na grade abaixo para começar a assistir.
+                    </p>
+
+                </div>
+
+
+                <!-- FAVORITOS -->
+
+                <button
+                    type="button"
+                    class="btn btn--favorite"
+                    id="heroFavBtn"
+                    aria-pressed="false"
+                    title="Adicionar aos favoritos">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         aria-hidden="true">
+
+                        <path d="M12 21s-7.5-4.7-9.7-9.2C.8 8.7 2.7 5 6.2 5c2 0 3.4 1.1 4.3 2.6L12 9.4l1.5-1.8C14.4 6.1 15.8 5 17.8 5c3.5 0 5.4 3.7 3.9 6.8C19.5 16.3 12 21 12 21z"/>
+
+                    </svg>
+
+                    <span id="heroFavLabel">Favoritar</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GUIA DE PROGRAMAÇÃO (EPG)
+        ================================================== -->
+
+        <section
+            class="epg"
+            id="epgSection"
+            aria-label="Guia de programação"
+            hidden>
+
+            <h2 class="section-title">
+
+                <span class="section-title__accent"></span>
+
+                Programação —
+                <span id="epgChannelName"></span>
+
+            </h2>
+
+            <div class="epg__timeline" id="epgTimeline">
+                <!-- Preenchido pelo app.js -->
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GRADE PRINCIPAL DE CANAIS
+        ================================================== -->
+
+        <section class="shelf" aria-label="Grade de canais">
+
+            <h2 class="section-title">
+
+                <span class="section-title__accent"></span>
+
+                <span id="gridTitle">Canais TV Rabisco</span>
+
+            </h2>
+
+            <div
+                class="grid"
+                id="channelGrid"
+                role="list"
+                aria-live="polite">
+
+                <!-- Canais preenchidos pelo app.js -->
+
+            </div>
+
+            <p class="grid__empty" id="gridEmpty" hidden>
+                Nenhum canal encontrado nesta categoria.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             CANAIS RECOMENDADOS
+        ================================================== -->
+
+        <section class="shelf" aria-label="Canais recomendados">
+
+            <h2 class="section-title">
+
+                <span class="section-title__accent"></span>
+
+                Canais recomendados
+
+            </h2>
+
+            <div class="shelf__row" id="recommendedRow">
+
+                <!-- Preenchido pelo app.js -->
+
+            </div>
+
+        </section>
+
+
     </main>
-  
-    <footer class="footer">
-      <p>TV Rabisco 2026 — &copy; Todo os direitos reservados. Todos os canais transmitem conteúdo real.</p>
-    </footer>
-  
-    <!-- hls.js via CDN — carregado sob demanda apenas se o navegador não tiver HLS nativo -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
-    <script src="app.js"></script>
-  
 
-<script src="player.js"></script>
+
+    <!-- =====================================================
+         RODAPÉ
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <p>
+            TV Rabisco 2026 — &copy; Todos os direitos reservados.
+        </p>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <!-- Biblioteca HLS.js -->
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
+
+    <!-- Arquivo principal: único script da aplicação -->
+
+    <script src="app.js"></script>
 
 </body>
 </html>
