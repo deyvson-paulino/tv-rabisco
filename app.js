@@ -367,20 +367,21 @@ function obterProgramaAtual(canal) {
 }
 
 
+
 function renderizarEpg(canal) {
 
-    if (!epgSection || !epgTimeline) return;
+    if (!epgSection || !epgTimeline) {
+        console.error("Elementos EPG não encontrados no HTML.");
+        return;
+    }
 
     epgTimeline.innerHTML = "";
 
     const epg = obterEpg(canal);
 
-    if (!epg.length) {
-
-        epgSection.hidden = true;
-
-        return;
-    }
+    console.log("Canal selecionado:", obterNome(canal));
+    console.log("Dados EPG recebidos:", canal.epg);
+    console.log("Programação interpretada:", epg);
 
     epgSection.hidden = false;
 
@@ -388,19 +389,24 @@ function renderizarEpg(canal) {
         epgChannelName.textContent = obterNome(canal);
     }
 
+    if (!epg.length) {
+
+        epgTimeline.textContent =
+            "Nenhuma programação cadastrada para este canal.";
+
+        return;
+    }
+
     epg.forEach(item => {
 
         const bloco = document.createElement("div");
-
         bloco.className = "epg__item";
 
         const horario = document.createElement("span");
-
         horario.className = "epg__time";
         horario.textContent = item.hora;
 
         const programa = document.createElement("span");
-
         programa.className = "epg__program";
         programa.textContent = item.programa;
 
@@ -411,6 +417,7 @@ function renderizarEpg(canal) {
     });
 
 }
+
 
 
 /* ============================================================
