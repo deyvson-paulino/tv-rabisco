@@ -1456,8 +1456,73 @@ function configurarPerfil() {
    20. INICIALIZAÇÃO
    ============================================================ */
 
+
+/* ============================================================
+   20. APRESENTAÇÃO INICIAL
+============================================================ */
+
+function configurarApresentacao() {
+
+    const intro = document.getElementById("introScreen");
+    const introVideo = document.getElementById("introVideo");
+    const skipButton = document.getElementById("skipIntro");
+
+    if (!intro || !skipButton) {
+        console.warn("Elementos da apresentação não encontrados.");
+        return;
+    }
+
+    let finalizada = false;
+
+    function finalizarApresentacao() {
+
+        if (finalizada) return;
+
+        finalizada = true;
+
+        if (introVideo) {
+            introVideo.pause();
+
+            try {
+                introVideo.currentTime = 0;
+            } catch (erro) {
+                console.warn("Não foi possível reiniciar o vídeo:", erro);
+            }
+        }
+
+        intro.classList.add("hidden");
+
+        intro.style.display = "none";
+
+        intro.style.pointerEvents = "none";
+
+        console.log("TV Rabisco liberada!");
+    }
+
+    // Botão Entrar na TV
+    skipButton.addEventListener("click", finalizarApresentacao);
+
+    // Finaliza quando a apresentação termina
+    if (introVideo) {
+        introVideo.addEventListener("ended", finalizarApresentacao);
+
+        introVideo.play().catch(erro => {
+            console.warn("Autoplay bloqueado pelo navegador:", erro);
+        });
+    }
+}
+
+
+/* ============================================================
+   21. INICIALIZAÇÃO DA APLICAÇÃO
+============================================================ */
+
 function iniciarAplicacao() {
 
+    // Configura a apresentação primeiro
+    configurarApresentacao();
+
+    // Configura os recursos da TV
     configurarControles();
 
     configurarBusca();
@@ -1474,6 +1539,7 @@ function iniciarAplicacao() {
 
     setInterval(atualizarRelogio, 1000);
 
+    // Carrega os canais
     carregarCanais();
 
 }
@@ -1486,7 +1552,6 @@ if (document.readyState === "loading") {
 } else {
 
     iniciarAplicacao();
-   configurarApresentacao();
 
 }
 
