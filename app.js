@@ -295,6 +295,7 @@ function alternarFavorito() {
    6. PROGRAMAÇÃO E EPG
    ============================================================ */
 
+
 function obterEpg(canal) {
 
     if (!Array.isArray(canal.epg)) {
@@ -302,18 +303,35 @@ function obterEpg(canal) {
     }
 
     return canal.epg
-        .filter(item =>
-            Array.isArray(item) &&
-            item.length >= 2 &&
-            /^\d{2}:\d{2}$/.test(String(item[0]))
-        )
-        .map(item => ({
-            hora: String(item[0]),
-            programa: String(item[1])
-        }))
-        .sort((a, b) => a.hora.localeCompare(b.hora));
+        .map(item => {
 
+            // Formato: ["18:00", "Jornal"]
+            if (Array.isArray(item) && item.length >= 2) {
+                return {
+                    hora: String(item[0]),
+                    programa: String(item[1])
+                };
+            }
+
+            // Formato: { hora: "18:00", programa: "Jornal" }
+            if (item && typeof item === "object") {
+                return {
+                    hora: String(item.hora || item.inicio || ""),
+                    programa: String(item.programa || item.nome || item.title || "")
+                };
+            }
+
+            return null;
+
+        })
+        .filter(item =>
+            item &&
+            /^\d{2}:\d{2}$/.test(item.hora) &&
+            item.programa
+        )
+        .sort((a, b) => a.hora.localeCompare(b.hora));
 }
+
 
 
 function obterProgramaAtual(canal) {
