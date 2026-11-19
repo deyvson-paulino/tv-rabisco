@@ -782,7 +782,7 @@ function attachSource(canal) {
 
     if (
         !url ||
-        url.includes("COLE_A_URL_DO_SEU_STREAM_AQUI")
+        url.includes("https://nose-highways-agency-butler.trycloudflare.com/playlist.m3u")
     ) {
 
         video.pause();
