@@ -1486,5 +1486,42 @@ if (document.readyState === "loading") {
 } else {
 
     iniciarAplicacao();
+   configurarApresentacao();
+
+}
+
+
+//video de apresentação
+/* ============================================================
+   APRESENTAÇÃO INICIAL
+============================================================ */
+
+function configurarApresentacao() {
+
+    const intro = document.getElementById("introScreen");
+    const introVideo = document.getElementById("introVideo");
+    const skipButton = document.getElementById("skipIntro");
+
+    if (!intro || !introVideo || !skipButton) return;
+
+    function finalizarApresentacao() {
+
+        intro.classList.add("hidden");
+
+        introVideo.pause();
+
+        introVideo.currentTime = 0;
+
+    }
+
+    skipButton.addEventListener("click", finalizarApresentacao);
+
+    introVideo.addEventListener("ended", finalizarApresentacao);
+
+    introVideo.play().catch(() => {
+
+        console.log("Aguardando interação para iniciar apresentação.");
+
+    });
 
 }
