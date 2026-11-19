@@ -138,7 +138,7 @@ const state = {
 
 const CATEGORY_LABELS = {
 
-    inicio: "Canais ao vivo",
+    inicio: "Canais TV Rabisco",
 
     aovivo: "Canais ao vivo",
 
