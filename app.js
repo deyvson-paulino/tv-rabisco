@@ -644,7 +644,7 @@ function atualizarTituloGrade() {
     if (!gridTitle) return;
 
     const titulos = {
-        inicio: "Canais TV Rabisco",
+        inicio: "Canais tv Rabisco",
         aovivo: "Canais ao vivo",
         filmes: "Filmes",
         series: "Séries",
@@ -652,7 +652,7 @@ function atualizarTituloGrade() {
     };
 
     gridTitle.textContent =
-        titulos[categoriaAtual] || "Canais TV Rabisco";
+        titulos[categoriaAtual] || "Canais tv Rabisco";
 
 }
 
