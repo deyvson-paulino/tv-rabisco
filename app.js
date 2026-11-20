@@ -429,6 +429,7 @@ function criarCard(canal) {
     const elemento = document.createElement("button");
 
     elemento.className = "card";
+   elemento.tabIndex = 0;
     elemento.type = "button";
     elemento.dataset.id = obterId(canal);
     elemento.setAttribute("role", "listitem");
@@ -1292,6 +1293,11 @@ function configurarFavoritos() {
    17. NAVEGAÇÃO POR TECLADO
    ============================================================ */
 
+
+/* ============================================================
+   17. NAVEGAÇÃO POR TECLADO E CONTROLE REMOTO
+   ============================================================ */
+
 function configurarTeclado() {
 
     document.addEventListener("keydown", evento => {
@@ -1307,10 +1313,15 @@ function configurarTeclado() {
                 elemento.isContentEditable
             );
 
+        // Não interferir na digitação
         if (digitando) return;
 
-        if (!video) return;
+        // Cards disponíveis na grade
+        const cards = [
+            ...document.querySelectorAll("#channelGrid .card")
+        ];
 
+        const indiceAtual = cards.indexOf(elemento);
 
         /* ESPAÇO: PLAY / PAUSE */
 
@@ -1318,23 +1329,107 @@ function configurarTeclado() {
 
             evento.preventDefault();
 
+            if (!video) return;
+
             if (video.paused) {
                 reproduzirVideo();
             } else {
                 video.pause();
             }
 
+            return;
         }
 
+        /* ENTER: SELECIONAR CARD */
 
-        /* M: MUDO */
+        if (evento.key === "Enter") {
 
-        if (evento.key.toLowerCase() === "m") {
+            if (elemento?.classList.contains("card")) {
+                elemento.click();
+            }
 
-            video.muted = !video.muted;
-
+            return;
         }
 
+        /* SETAS: NAVEGAR ENTRE CARDS */
+
+        if (
+            ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"]
+            .includes(evento.key)
+        ) {
+
+            if (!cards.length) return;
+
+            evento.preventDefault();
+
+            const colunas = obterNumeroColunas();
+
+            let proximo = indiceAtual;
+
+            if (indiceAtual === -1) {
+
+                proximo = 0;
+
+            } else {
+
+                switch (evento.key) {
+
+                    case "ArrowRight":
+                        proximo = Math.min(
+                            indiceAtual + 1,
+                            cards.length - 1
+                        );
+                        break;
+
+                    case "ArrowLeft":
+                        proximo = Math.max(
+                            indiceAtual - 1,
+                            0
+                        );
+                        break;
+
+                    case "ArrowDown":
+                        proximo = Math.min(
+                            indiceAtual + colunas,
+                            cards.length - 1
+                        );
+                        break;
+
+                    case "ArrowUp":
+                        proximo = Math.max(
+                            indiceAtual - colunas,
+                            0
+                        );
+                        break;
+
+                }
+
+            }
+
+            cards[proximo].focus();
+
+            cards[proximo].scrollIntoView({
+                block: "nearest",
+                behavior: "smooth"
+            });
+
+            return;
+        }
+
+        /* ESCAPE: SAIR DA TELA CHEIA */
+
+        if (evento.key === "Escape") {
+
+            if (document.fullscreenElement) {
+                document.exitFullscreen().catch(() => {});
+            }
+
+            if (busca) {
+                busca.blur();
+            }
+
+            return;
+        }
 
         /* F: TELA CHEIA */
 
@@ -1342,15 +1437,56 @@ function configurarTeclado() {
 
             const player = $("#playerShell");
 
-            if (player && !document.fullscreenElement) {
+            if (!player) return;
+
+            if (!document.fullscreenElement) {
+
                 player.requestFullscreen().catch(() => {});
-            } else if (document.fullscreenElement) {
+
+            } else {
+
                 document.exitFullscreen().catch(() => {});
+
             }
+
+            return;
+        }
+
+        /* M: SILENCIAR */
+
+        if (evento.key.toLowerCase() === "m" && video) {
+
+            video.muted = !video.muted;
 
         }
 
     });
+
+}
+
+
+/* CALCULAR QUANTIDADE DE COLUNAS */
+
+function obterNumeroColunas() {
+
+    if (!lista || !lista.children.length) return 1;
+
+    const primeiro = lista.children[0]
+        .getBoundingClientRect();
+
+    const segundo = lista.children[1]
+        ?.getBoundingClientRect();
+
+    if (!segundo || primeiro.width <= 0) return 1;
+
+    const distancia = segundo.left - primeiro.left;
+
+    const colunas = Math.round(
+        (lista.clientWidth + distancia) /
+        (primeiro.width + distancia)
+    );
+
+    return Math.max(1, colunas);
 
 }
 
