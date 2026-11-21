@@ -793,7 +793,6 @@ function destruirHls() {
 }
 
 
-
 function reproduzirVideo() {
 
     if (!video) return;
@@ -831,6 +830,7 @@ function reproduzirVideo() {
 
     }
 }
+
 // Ativação manual do áudio
 const ativarAudio = document.getElementById("ativarAudio");
 
