@@ -3,7 +3,6 @@
    Tema escuro premium, sistema de espaçamento 8px, responsivo.
    ============================================================ */
 
-
 :root {
   /* Paleta */
   --bg-900: #07090d;
@@ -94,17 +93,19 @@ button { font-family: inherit; }
 .topbar__logo-mark {
   width: 28px;
   height: 28px;
-  border-radius: 9px;
+  /*border-radius: 9px;
   background: linear-gradient(135deg, var(--accent-400), var(--accent-700));
-  box-shadow: 0 4px 14px rgba(31, 185, 138, 0.4);
+  box-shadow: 0 4px 14px rgba(31, 185, 138, 0.4);*/
   position: relative;
+  margin-right: 12px;
+  top: -5px;
 }
 .topbar__logo-mark::after {
   content: "";
   position: absolute;
   inset: 8px;
-  border-radius: 3px;
-  background: rgba(7, 9, 13, 0.85);
+  /*border-radius: 3px;
+  background: rgba(7, 9, 13, 0.85);*/
 }
 
 .topbar__logo {
@@ -115,6 +116,7 @@ button { font-family: inherit; }
 .topbar__logo em {
   font-style: normal;
   color: var(--accent-400);
+  font-size: 30px;
 }
 
 .topnav {
