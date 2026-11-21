@@ -427,9 +427,10 @@ button { font-family: inherit; }
 }
 
 /* volumee active */
-#ativarAudio (
+
+#ativarAudio {
   position: relative;
-  top:-30px;
+  top: -30px;
   left: 80px;
   display: flex;
   text-align: center;
@@ -440,10 +441,17 @@ button { font-family: inherit; }
   padding: 8px 18px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.15s;
-  background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
+  transition: background 0.25s var(--ease),
+              color 0.25s var(--ease),
+              transform 0.15s;
+  background: linear-gradient(
+      135deg,
+      var(--accent-500),
+      var(--accent-700)
+  );
   color: #04110c;
-)
+}
+
 
 .btn {
   border: 0;
