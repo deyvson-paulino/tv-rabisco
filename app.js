@@ -898,7 +898,7 @@ function mostrarErro(mensagem) {
 
 }
 /* Muted */
-const video = document.getElementById("video");
+//const video = document.getElementById("video");
 
 // Inicia o player sem áudio
 video.muted = true;
