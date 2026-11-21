@@ -67,6 +67,45 @@ const stateNoSignal = $("#stateNoSignal");
 const stateError = $("#stateError");
 const errorMessage = $("#errorMessage");
 
+const ativarAudio = document.getElementById("ativarAudio");
+
+// Esconde o botão de áudio
+function esconderBotaoAudio() {
+
+    if (ativarAudio) {
+        ativarAudio.hidden = true;
+    }
+
+}
+
+// Mostra o botão de áudio
+function mostrarBotaoAudio() {
+
+    if (ativarAudio && video.muted) {
+        ativarAudio.hidden = false;
+    }
+
+}
+
+// Monitora o início da reprodução
+if (video) {
+
+    video.addEventListener("playing", () => {
+
+        esconderBotaoAudio();
+
+    });
+
+    // Monitora a ativação do áudio
+    video.addEventListener("volumechange", () => {
+
+        if (!video.muted && video.volume > 0) {
+            esconderBotaoAudio();
+        }
+
+    });
+
+}
 
 /* ============================================================
    3. ESTADO DA APLICAÇÃO
@@ -759,7 +798,6 @@ function reproduzirVideo() {
 
     if (!video) return;
 
-    // Tenta primeiro reproduzir com áudio
     video.muted = false;
     video.volume = 1;
 
@@ -769,27 +807,19 @@ function reproduzirVideo() {
 
         tentativa.then(() => {
 
-            console.log("Reprodução iniciada com áudio.");
+            esconderBotaoAudio();
 
         }).catch(erro => {
 
             if (erro.name === "NotAllowedError") {
 
-                console.warn("Autoplay com áudio bloqueado.");
-
-                // Tenta novamente sem áudio
                 video.muted = true;
 
                 video.play().catch(err => {
-                    console.warn("Autoplay mutado bloqueado:", err);
+                    console.warn("Erro:", err);
                 });
 
-                // Exibe o botão de ativação
-                const botao = document.getElementById("ativarAudio");
-
-                if (botao) {
-                    botao.hidden = false;
-                }
+                mostrarBotaoAudio();
 
             } else {
 
@@ -798,9 +828,9 @@ function reproduzirVideo() {
             }
 
         });
+
     }
 }
-
 // Ativação manual do áudio
 const ativarAudio = document.getElementById("ativarAudio");
 
@@ -811,12 +841,12 @@ if (ativarAudio) {
         video.muted = false;
         video.volume = 1;
 
-        ativarAudio.hidden = true;
+        esconderBotaoAudio();
 
     });
 
-       }
-   
+}
+
 /*function reproduzirVideo() {
 
     if (!video) return;
