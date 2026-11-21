@@ -67,45 +67,6 @@ const stateNoSignal = $("#stateNoSignal");
 const stateError = $("#stateError");
 const errorMessage = $("#errorMessage");
 
-const ativarAudio = document.getElementById("ativarAudio");
-
-// Esconde o botão de áudio
-function esconderBotaoAudio() {
-
-    if (ativarAudio) {
-        ativarAudio.hidden = true;
-    }
-
-}
-
-// Mostra o botão de áudio
-function mostrarBotaoAudio() {
-
-    if (ativarAudio && video.muted) {
-        ativarAudio.hidden = false;
-    }
-
-}
-
-// Monitora o início da reprodução
-if (video) {
-
-    video.addEventListener("playing", () => {
-
-        esconderBotaoAudio();
-
-    });
-
-    // Monitora a ativação do áudio
-    video.addEventListener("volumechange", () => {
-
-        if (!video.muted && video.volume > 0) {
-            esconderBotaoAudio();
-        }
-
-    });
-
-}
 
 /* ============================================================
    3. ESTADO DA APLICAÇÃO
@@ -793,47 +754,94 @@ function destruirHls() {
 }
 
 
+
+/* ============================================================
+   CONTROLE DE ÁUDIO E REPRODUÇÃO
+   ============================================================ */
+
+const ativarAudio = document.getElementById("ativarAudio");
+
+// Esconde o botão de áudio
+function esconderBotaoAudio() {
+
+    if (ativarAudio) {
+        ativarAudio.hidden = true;
+    }
+
+}
+
+// Mostra o botão de áudio
+function mostrarBotaoAudio() {
+
+    if (ativarAudio && video.muted) {
+        ativarAudio.hidden = false;
+    }
+
+}
+
+// Monitora o início da reprodução
+if (video) {
+
+    video.addEventListener("playing", () => {
+
+        esconderBotaoAudio();
+
+    });
+
+    // Monitora a ativação do áudio
+    video.addEventListener("volumechange", () => {
+
+        if (!video.muted && video.volume > 0) {
+            esconderBotaoAudio();
+        }
+
+    });
+
+}
+
 function reproduzirVideo() {
 
     if (!video) return;
 
+    // Tenta iniciar com áudio
     video.muted = false;
     video.volume = 1;
 
-    const tentativa = video.play();
+    video.play().then(() => {
 
-    if (tentativa && typeof tentativa.then === "function") {
-
-        tentativa.then(() => {
-
+        // Se estiver com áudio, esconde o botão
+        if (!video.muted && video.volume > 0) {
             esconderBotaoAudio();
+        }
 
-        }).catch(erro => {
+    }).catch(erro => {
 
-            if (erro.name === "NotAllowedError") {
+        if (erro.name === "NotAllowedError") {
 
-                video.muted = true;
+            // Tenta reproduzir sem áudio
+            video.muted = true;
 
-                video.play().catch(err => {
-                    console.warn("Erro:", err);
-                });
+            video.play().then(() => {
 
                 mostrarBotaoAudio();
 
-            } else {
+            }).catch(err => {
 
-                console.error("Erro na reprodução:", erro);
+                console.warn("Erro no autoplay:", err);
 
-            }
+            });
 
-        });
+        } else {
 
-    }
+            console.error("Erro na reprodução:", erro);
+
+        }
+
+    });
+
 }
 
 // Ativação manual do áudio
-const ativarAudio = document.getElementById("ativarAudio");
-
 if (ativarAudio) {
 
     ativarAudio.addEventListener("click", () => {
@@ -841,11 +849,27 @@ if (ativarAudio) {
         video.muted = false;
         video.volume = 1;
 
-        esconderBotaoAudio();
+        if (!video.paused) {
+            esconderBotaoAudio();
+        }
 
     });
 
 }
+
+// Monitora alterações no áudio
+if (video) {
+
+    video.addEventListener("volumechange", () => {
+
+        if (!video.muted && video.volume > 0) {
+            esconderBotaoAudio();
+        }
+
+    });
+
+}
+
 
 /*function reproduzirVideo() {
 
