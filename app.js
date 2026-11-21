@@ -761,7 +761,7 @@ function destruirHls() {
 
 const ativarAudio = document.getElementById("ativarAudio");
 
-// Esconde o botão de áudio
+// Esconde botão
 function esconderBotaoAudio() {
 
     if (ativarAudio) {
@@ -770,36 +770,17 @@ function esconderBotaoAudio() {
 
 }
 
-// Mostra o botão de áudio
+// Mostra botão
 function mostrarBotaoAudio() {
 
-    if (ativarAudio && video.muted) {
+    if (ativarAudio && video && video.muted) {
         ativarAudio.hidden = false;
     }
 
 }
 
-// Monitora o início da reprodução
-if (video) {
-
-    video.addEventListener("playing", () => {
-
-        esconderBotaoAudio();
-
-    });
-
-    // Monitora a ativação do áudio
-    video.addEventListener("volumechange", () => {
-
-        if (!video.muted && video.volume > 0) {
-            esconderBotaoAudio();
-        }
-
-    });
-
-}
-
-function reproduzirVideo() {
+// Controle de reprodução
+async function reproduzirVideo() {
 
     if (!video) return;
 
@@ -807,57 +788,73 @@ function reproduzirVideo() {
     video.muted = false;
     video.volume = 1;
 
-    video.play().then(() => {
+    try {
 
-        // Se estiver com áudio, esconde o botão
-        if (!video.muted && video.volume > 0) {
-            esconderBotaoAudio();
-        }
+        await video.play();
 
-    }).catch(erro => {
+        esconderBotaoAudio();
+
+    } catch (erro) {
+
+        console.warn("Falha ao iniciar com áudio:", erro);
 
         if (erro.name === "NotAllowedError") {
 
-            // Tenta reproduzir sem áudio
+            // Tenta iniciar mutado
             video.muted = true;
 
-            video.play().then(() => {
+            try {
+
+                await video.play();
 
                 mostrarBotaoAudio();
 
-            }).catch(err => {
+            } catch (erroMutado) {
 
-                console.warn("Erro no autoplay:", err);
+                console.warn(
+                    "Falha na reprodução mutada:",
+                    erroMutado
+                );
 
-            });
+            }
 
         } else {
 
-            console.error("Erro na reprodução:", erro);
+            console.error("Erro de reprodução:", erro);
 
         }
 
-    });
+    }
 
 }
 
 // Ativação manual do áudio
-if (ativarAudio) {
+if (ativarAudio && video) {
 
-    ativarAudio.addEventListener("click", () => {
+    ativarAudio.addEventListener("click", async () => {
 
         video.muted = false;
         video.volume = 1;
 
-        if (!video.paused) {
+        try {
+
+            if (video.paused) {
+                await video.play();
+            }
+
             esconderBotaoAudio();
+
+        } catch (erro) {
+
+            console.error("Não foi possível ativar o áudio:", erro);
+
         }
 
     });
 
 }
 
-// Monitora alterações no áudio
+// Monitoramento do player
 if (video) {
 
     video.addEventListener("volumechange", () => {
@@ -869,6 +866,7 @@ if (video) {
     });
 
 }
+
 
 
 /*function reproduzirVideo() {
