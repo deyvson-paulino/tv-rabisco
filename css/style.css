@@ -426,6 +426,25 @@ button { font-family: inherit; }
   animation: pulse 1.6s ease-in-out infinite;
 }
 
+/* volumee active */
+#ativarAudio (
+  position: relative;
+  top:-30px;
+  left: 80px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  border: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), transform 0.15s;
+  background: linear-gradient(135deg, var(--accent-500), var(--accent-700));
+  color: #04110c;
+)
+
 .btn {
   border: 0;
   border-radius: 999px;
