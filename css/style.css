@@ -452,6 +452,9 @@ button { font-family: inherit; }
   color: #04110c;
 }
 
+#ativarAudio[hidden] {
+  display: none !important;
+}
 
 .btn {
   border: 0;
