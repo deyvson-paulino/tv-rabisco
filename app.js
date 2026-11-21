@@ -897,7 +897,22 @@ function mostrarErro(mensagem) {
     atualizarStatus("Erro na transmissão");
 
 }
+/* Muted */
+const video = document.getElementById("video");
 
+// Inicia o player sem áudio
+video.muted = true;
+
+// Inicia a reprodução
+video.play().catch(error => {
+    console.log("Erro ao iniciar o vídeo:", error);
+});
+
+// Após 1 segundo, tenta ativar o áudio
+setTimeout(() => {
+    video.muted = false;
+    video.volume = 1;
+}, 1000);
 
 /* ============================================================
    11. SELECIONAR E REPRODUZIR CANAL
