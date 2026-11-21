@@ -754,25 +754,70 @@ function destruirHls() {
 }
 
 
-/*function reproduzirVideo() {
+
+function reproduzirVideo() {
 
     if (!video) return;
 
-    const promessa = video.play();
+    // Tenta primeiro reproduzir com áudio
+    video.muted = false;
+    video.volume = 1;
 
-    if (promessa && typeof promessa.catch === "function") {
+    const tentativa = video.play();
 
-        promessa.catch(erro => {
+    if (tentativa && typeof tentativa.then === "function") {
 
-            console.warn("Reprodução aguardando interação:", erro);
+        tentativa.then(() => {
+
+            console.log("Reprodução iniciada com áudio.");
+
+        }).catch(erro => {
+
+            if (erro.name === "NotAllowedError") {
+
+                console.warn("Autoplay com áudio bloqueado.");
+
+                // Tenta novamente sem áudio
+                video.muted = true;
+
+                video.play().catch(err => {
+                    console.warn("Autoplay mutado bloqueado:", err);
+                });
+
+                // Exibe o botão de ativação
+                const botao = document.getElementById("ativarAudio");
+
+                if (botao) {
+                    botao.hidden = false;
+                }
+
+            } else {
+
+                console.error("Erro na reprodução:", erro);
+
+            }
 
         });
-
     }
+}
 
-}*/
+// Ativação manual do áudio
+const ativarAudio = document.getElementById("ativarAudio");
 
-function reproduzirVideo() {
+if (ativarAudio) {
+
+    ativarAudio.addEventListener("click", () => {
+
+        video.muted = false;
+        video.volume = 1;
+
+        ativarAudio.hidden = true;
+
+    });
+
+       }
+   
+/*function reproduzirVideo() {
 
     if (!video) return;
 
@@ -807,7 +852,7 @@ function reproduzirVideo() {
         });
 
     }
-}
+}*/
 
 
 function conectarVideo(canal) {
