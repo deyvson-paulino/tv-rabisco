@@ -754,7 +754,7 @@ function destruirHls() {
 }
 
 
-function reproduzirVideo() {
+/*function reproduzirVideo() {
 
     if (!video) return;
 
@@ -770,6 +770,43 @@ function reproduzirVideo() {
 
     }
 
+}*/
+
+function reproduzirVideo() {
+
+    if (!video) return;
+
+    // Inicia sem áudio
+    video.muted = true;
+    video.volume = 1;
+
+    const promessa = video.play();
+
+    if (promessa && typeof promessa.then === "function") {
+
+        promessa.then(() => {
+
+            console.log("Vídeo iniciado sem áudio.");
+
+            // Aguarda 1 segundo após iniciar a reprodução
+            setTimeout(() => {
+
+                video.muted = false;
+
+                console.log("Tentativa de ativar o áudio.");
+
+            }, 1000);
+
+        }).catch(erro => {
+
+            console.warn(
+                "Reprodução aguardando interação:",
+                erro
+            );
+
+        });
+
+    }
 }
 
 
@@ -897,22 +934,6 @@ function mostrarErro(mensagem) {
     atualizarStatus("Erro na transmissão");
 
 }
-/* Muted */
-//const video = document.getElementById("video");
-
-// Inicia o player sem áudio
-video.muted = true;
-
-// Inicia a reprodução
-video.play().catch(error => {
-    console.log("Erro ao iniciar o vídeo:", error);
-});
-
-// Após 1 segundo, tenta ativar o áudio
-setTimeout(() => {
-    video.muted = false;
-    video.volume = 1;
-}, 1000);
 
 /* ============================================================
    11. SELECIONAR E REPRODUZIR CANAL
